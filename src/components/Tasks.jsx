@@ -1,19 +1,7 @@
 import { Check, Pencil, Trash2 } from "lucide-react";
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useState } from "react";
-// onDeleteTaskClick, onAddTaskSubimit
 
-function Tasks({ tasks, onTaskClick }) {
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-
-  function handleDelete() {
-    setDeleteModalOpen(true); // Abre o modal
-  }
-
-  function handleCancel() {
-    setDeleteModalOpen(false);
-  }
-
+function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
   return (
     <>
       <ul className="space-y-4 w-full">
@@ -47,8 +35,7 @@ function Tasks({ tasks, onTaskClick }) {
                   </button>
                   <button
                     className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-md"
-                    // onClick={() => onDeleteTaskClick(task.id)}
-                    onClick={handleDelete}
+                    onClick={() => onDeleteTaskClick(task.id)} // Passa o ID da tarefa
                   >
                     <Trash2 />
                   </button>
@@ -72,7 +59,6 @@ function Tasks({ tasks, onTaskClick }) {
           </li>
         ))}
       </ul>
-      <ConfirmDeleteModal isOpen={isDeleteModalOpen} onCancel={handleCancel} />
     </>
   );
 }

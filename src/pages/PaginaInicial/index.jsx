@@ -1,7 +1,7 @@
 import { useState } from "react";
 // import "./index.css";
 import "react-tooltip/dist/react-tooltip.css";
-import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
+import ConfirmDeleteModal from "../../components/ConfirmDeleteTaskModal";
 import CreateTaskModal from "../../components/CreateTaskModal";
 import Tasks from "../../components/Tasks";
 
@@ -48,16 +48,19 @@ function PaginaInicial() {
       dataLimite: dataLimite,
     };
     setTasks([...tasks, newTask]);
+    setCreateModalOpen(false); // Fecha o modal após a criação
   }
 
   function onDeleteTaskClick(taskId) {
-    setTaskToDelete(tasks.find((task) => task.id === taskId)); // Define a tarefa a ser excluída
+    setTaskToDelete(tasks.find((task) => task.id === taskId));
+    setModalOpen(true); // Abre o modal
   }
 
   function handleDelete(taskId) {
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(newTasks);
-    setModalOpen(false); // Fecha o modal após excluir
+    setModalOpen(false);
+    setTaskToDelete(null);
   }
 
   function handleCancel() {
@@ -119,7 +122,11 @@ function PaginaInicial() {
         onCancel={handleCancel}
       />
 
-      <CreateTaskModal isOpen={isCreateModalOpen} />
+      <CreateTaskModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setCreateModalOpen(false)} // Fecha o modal ao cancelar ou criar a tarefa
+        onAddTaskSubmit={onAddTaskSubimit} // Função de envio para adicionar uma nova tarefa
+      />
     </div>
   );
 }
