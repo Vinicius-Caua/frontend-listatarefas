@@ -1,23 +1,15 @@
-import Modal from "./Modal";
+import Modal from "../Modal";
 
-function CreateTaskModal({ isOpen, onCreate, onCancel }) {
-  if (!isOpen) return null; // Não renderiza nada se o modal não estiver aberto
+function EditModal({ isOpen, task, onCancel }) {
+  if (!isOpen) return null;
 
   return (
-    <Modal
-      titulo="Criar Nova Tarefa"
-      subTitulo="Preencha os detalhes da nova tarefa:"
-      onClick={onCreate}
-      onCancel={onCancel}
-    >
+    <Modal titulo="Editar Tarefa">
+      <h1>Edite a tarefa:</h1>
       <form>
         <div>
           <label>Nome:</label>
           <input type="text" name="nome" required />
-        </div>
-        <div>
-          <label>Descrição:</label>
-          <textarea name="descricao" required></textarea>
         </div>
         <div>
           <label>Custo:</label>
@@ -26,6 +18,14 @@ function CreateTaskModal({ isOpen, onCreate, onCancel }) {
         <div>
           a<label>Data Limite:</label>
           <input type="date" name="dataLimite" required />
+        </div>
+        <div>
+          <label>Descrição:</label>
+          <textarea
+            name="descricao"
+            required
+            className="content-center"
+          ></textarea>
         </div>
         <div className="mt-4 flex justify-end space-x-2">
           <button
@@ -47,4 +47,4 @@ function CreateTaskModal({ isOpen, onCreate, onCancel }) {
   );
 }
 
-export default CreateTaskModal;
+export default EditModal;

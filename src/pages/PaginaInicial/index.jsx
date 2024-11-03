@@ -1,85 +1,17 @@
 import { useState } from "react";
-// import "./index.css";
 import "react-tooltip/dist/react-tooltip.css";
-import ConfirmDeleteModal from "../../components/ConfirmDeleteTaskModal";
-import CreateTaskModal from "../../components/CreateTaskModal";
-import Tasks from "../../components/Tasks";
+import CreateModal from "../../components/CreateModal";
+import TaskCard from "../../components/TaskCard";
 
 function PaginaInicial() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      nome: "Fazer o L",
-      descricao: "Teste do teste",
-      realizada: true,
-      custo: 345.87,
-      dataLimite: "2024-11-05",
-    },
-    {
-      id: 2,
-      nome: "Pagar Marcelly Autopecas Marcelly",
-      descricao:
-        "Teste do teste2Teste do teste2Teste do teste2Teste do teste2Teste do teste2Teste do teste2Teste do teste2Teste do teste2Teste do teste2Teste do teste2",
-      realizada: false,
-      custo: 700.87,
-      dataLimite: "2024-11-05",
-    },
-    {
-      id: 3,
-      nome: "Comer Strogonoff",
-      descricao: "Teste do teste3",
-      realizada: false,
-      custo: 2456.87,
-      dataLimite: "2024-11-05",
-    },
-  ]);
-
-  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [taskToDelete, setTaskToDelete] = useState(null);
-
-  function onAddTaskSubimit(nome, descricao, custo, dataLimite) {
-    const newTask = {
-      id: tasks.length + 1,
-      nome: nome,
-      descricao: descricao,
-      custo: custo,
-      realizada: false,
-      dataLimite: dataLimite,
-    };
-    setTasks([...tasks, newTask]);
-    setCreateModalOpen(false); // Fecha o modal após a criação
-  }
-
-  function onDeleteTaskClick(taskId) {
-    setTaskToDelete(tasks.find((task) => task.id === taskId));
-    setModalOpen(true); // Abre o modal
-  }
-
-  function handleDelete(taskId) {
-    const newTasks = tasks.filter((task) => task.id !== taskId);
-    setTasks(newTasks);
-    setModalOpen(false);
-    setTaskToDelete(null);
-  }
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleCancel() {
-    setModalOpen(false); // Fecha o modal sem excluir
-    setTaskToDelete(null); // Limpa a tarefa a ser excluída
+    setIsModalOpen(false); // Fecha o modal sem excluir
   }
 
   function handleCreate() {
-    setCreateModalOpen(true);
-  }
-
-  function onTaskClick(taskId) {
-    const newTasks = tasks.map((task) => {
-      if (task.id == taskId) {
-        return { ...task, realizada: !task.realizada };
-      }
-      return task;
-    });
-    setTasks(newTasks);
+    setIsModalOpen(true);
   }
 
   return (
@@ -95,13 +27,7 @@ function PaginaInicial() {
         {/* Container das tarefas */}
         <div className="flex">
           <div className="w-[500px] bg-yellow-100 rounded-3xl p-4 flex flex-col items-center space-y-4">
-            <Tasks
-              tasks={tasks}
-              onTaskClick={onTaskClick}
-              onDeleteTaskClick={onDeleteTaskClick}
-              onAddTaskSubimit={onAddTaskSubimit}
-            />
-
+            <TaskCard />
             <div className="w-[200px] mt-4">
               <button
                 className="w-full text-xl text-black font-bold text-center bg-green-600 p-4 rounded-lg shadow-md"
@@ -114,19 +40,7 @@ function PaginaInicial() {
         </div>
       </div>
 
-      {/* Integrando o modal de confirmação */}
-      <ConfirmDeleteModal
-        isOpen={isModalOpen}
-        task={taskToDelete}
-        onDelete={handleDelete}
-        onCancel={handleCancel}
-      />
-
-      <CreateTaskModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setCreateModalOpen(false)} // Fecha o modal ao cancelar ou criar a tarefa
-        onAddTaskSubmit={onAddTaskSubimit} // Função de envio para adicionar uma nova tarefa
-      />
+      <CreateModal isOpen={isModalOpen} onCancel={handleCancel} />
     </div>
   );
 }
