@@ -4,7 +4,7 @@ import axios from "axios";
 const apiUrl =
   window.location.hostname === "localhost"
     ? "http://localhost:8080" // URL para desenvolvimento
-    : "https://backend-listatarefas-production.up.railway.app/tarefas"; // URL para produção
+    : "https://backend-listatarefas-production.up.railway.app"; // URL para produção
 
 const api = axios.create({
   baseURL: apiUrl,
