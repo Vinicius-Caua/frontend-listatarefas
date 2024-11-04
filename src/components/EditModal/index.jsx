@@ -99,6 +99,11 @@ function EditModal({ isOpen, task, onCancel }) {
             required
             value={formValues.custo}
             onChange={handleChange}
+            onInput={(e) => {
+              if (e.target.value.length > 10) {
+                e.target.value = e.target.value.slice(0, 10);
+              }
+            }}
           />
         </div>
         <div>
@@ -117,6 +122,7 @@ function EditModal({ isOpen, task, onCancel }) {
             name="descricao"
             value={formValues.descricao}
             onChange={handleChange}
+            maxLength={35}
           ></textarea>
         </div>
         <div className="mt-4 flex justify-end space-x-2">

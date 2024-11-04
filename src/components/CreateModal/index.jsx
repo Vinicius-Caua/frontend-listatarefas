@@ -36,11 +36,27 @@ function CreateModal({ isOpen, onCancel }) {
       <form onSubmit={createTarefas}>
         <div>
           <label>Nome:</label>
-          <input type="text" name="nome" required ref={inputNome} />
+          <input
+            type="text"
+            name="nome"
+            required
+            ref={inputNome}
+            maxLength={27}
+          />
         </div>
         <div>
           <label>Custo:</label>
-          <input type="number" name="custo" required ref={inputCusto} />
+          <input
+            type="number"
+            name="custo"
+            required
+            ref={inputCusto}
+            onInput={(e) => {
+              if (e.target.value.length > 10) {
+                e.target.value = e.target.value.slice(0, 10);
+              }
+            }}
+          />
         </div>
         <div>
           <label>Data Limite:</label>
@@ -53,6 +69,7 @@ function CreateModal({ isOpen, onCancel }) {
             required
             className="content-center"
             ref={inputDescricao}
+            maxLength={35}
           ></textarea>
         </div>
         <div className="mt-4 flex justify-end space-x-2">
