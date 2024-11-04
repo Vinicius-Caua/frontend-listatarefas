@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = "backend-listatarefas-production.up.railway.app";
+const apiUrl = "https://backend-listatarefas-production.up.railway.app/tarefas";
 
 const api = axios.create({
   baseURL: apiUrl,
