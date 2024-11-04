@@ -6,41 +6,40 @@ import TaskCard from "../../components/TaskCard";
 function PaginaInicial() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Função para fechar o modal
   function handleCancel() {
     setIsModalOpen(false); // Fecha o modal sem excluir
   }
 
+  // Função para abrir o create modal
   function handleCreate() {
     setIsModalOpen(true);
   }
 
   return (
-    <div className="w-screen h-screen bg-slate-500 flex justify-center items-center p-6 bg-gradient-to-b from-indigo-500 to-blue-300">
-      <div className="flex flex-col items-center space-y-4">
-        {/* Container que envolve o título */}
-        <div className="w-[500px] text-center">
-          <div className="bg-yellow-400 text-3xl text-black font-bold py-4 rounded-lg shadow-md">
-            <h1>Lista Tarefas</h1>
-          </div>
-        </div>
-
-        {/* Container das tarefas */}
-        <div className="flex">
-          <div className="w-[500px] bg-yellow-100 rounded-3xl p-4 flex flex-col items-center space-y-4">
-            <TaskCard />
-            <div className="w-[200px] mt-4">
-              <button
-                className="w-full text-xl text-black font-bold text-center bg-green-600 p-4 rounded-lg shadow-md"
-                onClick={handleCreate}
-              >
-                Criar
-              </button>
-            </div>
-          </div>
-        </div>
+    <div className="flex flex-col items-center gap-1 w-1/2 h-[770px] bg-note-pad bg-no-repeat bg-contain bg-center my-6 mx-auto">
+      <div className="mt-28 mb-6">
+        <h1 className="text-4xl font-bold	font-main text-dark">
+          Lista de Tarefas
+        </h1>
       </div>
+      <div className="h-[490px] overflow-y-auto">
+        <TaskCard />
+      </div>
+      {
+        <div className="w-32 mt-4">
+          <button
+            className="w-full text-xl text-dark font-bold text-center bg-green-500 p-2 rounded-lg shadow-md"
+            onClick={handleCreate}
+          >
+            Criar
+          </button>
+        </div>
+      }
 
-      <CreateModal isOpen={isModalOpen} onCancel={handleCancel} />
+      <div>
+        <CreateModal isOpen={isModalOpen} onCancel={handleCancel} />
+      </div>
     </div>
   );
 }

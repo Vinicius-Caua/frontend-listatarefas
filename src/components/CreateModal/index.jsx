@@ -1,23 +1,50 @@
+import api from "../../api";
 import Modal from "../Modal";
+import { useRef } from "react";
 
 function CreateModal({ isOpen, onCancel }) {
+  // Referências para os campos do formulário (create)
+  const inputNome = useRef();
+  const inputDescricao = useRef();
+  const inputCusto = useRef();
+  const inputDataLimite = useRef();
+  const realizada = false;
+
+  async function createTarefas(e) {
+    e.preventDefault(); // Previne o comportamento padrão do formulário
+    try {
+      await api.post("/tarefas", {
+        nome: inputNome.current.value,
+        descricao: inputDescricao.current.value,
+        realizada: realizada,
+        custo: parseFloat(inputCusto.current.value),
+        dataLimite: new Date(inputDataLimite.current.value),
+      });
+
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   if (!isOpen) return null; // Não renderiza nada se o modal não estiver aberto
 
   return (
+    // Modal de criação de tarefas
     <Modal titulo="Criar Nova Tarefa">
       <h1>Preencha os detalhes da nova tarefa:</h1>
-      <form>
+      <form onSubmit={createTarefas}>
         <div>
           <label>Nome:</label>
-          <input type="text" name="nome" required />
+          <input type="text" name="nome" required ref={inputNome} />
         </div>
         <div>
           <label>Custo:</label>
-          <input type="number" name="custo" required />
+          <input type="number" name="custo" required ref={inputCusto} />
         </div>
         <div>
-          a<label>Data Limite:</label>
-          <input type="date" name="dataLimite" required />
+          <label>Data Limite:</label>
+          <input type="date" name="dataLimite" required ref={inputDataLimite} />
         </div>
         <div>
           <label>Descrição:</label>
@@ -25,6 +52,7 @@ function CreateModal({ isOpen, onCancel }) {
             name="descricao"
             required
             className="content-center"
+            ref={inputDescricao}
           ></textarea>
         </div>
         <div className="mt-4 flex justify-end space-x-2">

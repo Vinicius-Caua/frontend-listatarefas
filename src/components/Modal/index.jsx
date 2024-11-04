@@ -1,7 +1,8 @@
+// Modal Base
 function Modal({ titulo, children }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg p-10 w-90">
+      <div className="bg-white rounded-lg shadow-lg p-10 max-w-96 max-h-96">
         <h2 className="text-3xl font-bold mb-4">{titulo}</h2>
         {children}
       </div>
