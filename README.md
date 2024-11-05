@@ -16,7 +16,7 @@ Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de 
 ```env
 VITE_API_URL=http://localhost:porta
 ```
-No caso deste projeto, utilizei o [Netfly](https://www.netlify.com) para deploy da aplicação.
+No caso deste projeto, utilizei o [Netlify](https://www.netlify.com) para deploy da aplicação.
 ## Construção e Execução
 
 Para iniciar o servidor de desenvolvimento, execute o seguinte comando:
