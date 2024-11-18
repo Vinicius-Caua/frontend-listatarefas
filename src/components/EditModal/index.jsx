@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../api";
 import Modal from "../Modal";
-import { formatarData } from "../../utils";
 
 function EditModal({ isOpen, task, onCancel }) {
   const [formValues, setFormValues] = useState({

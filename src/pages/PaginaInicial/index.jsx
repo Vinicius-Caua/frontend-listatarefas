@@ -16,6 +16,7 @@ function PaginaInicial() {
     setIsModalOpen(true);
   }
 
+  // Camada anterior as tasks
   return (
     <div className="flex flex-col items-center gap-1 w-1/2 h-[770px] bg-note-pad bg-no-repeat bg-contain bg-center my-6 mx-auto">
       <div className="mt-28 mb-6">
