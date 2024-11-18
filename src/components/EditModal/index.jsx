@@ -25,8 +25,6 @@ function EditModal({ isOpen, task, onCancel }) {
     if (isOpen && task) {
       // Converte a dataLimite para o formato correto (YYYY-MM-DD)
       const formattedDate = new Date(task.dataLimite).toISOString().split('T')[0]; // 'en-CA' retorna no formato ISO 'YYYY-MM-DD'
-      console.log('Data Limite original:', task.dataLimite);
-      console.log('Data Limite formatada:', formattedDate);
       setFormValues({
         id: task.id,
         nome: task.nome || "",
