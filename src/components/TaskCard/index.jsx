@@ -35,7 +35,7 @@ function TaskCard() {
     })
   );
 
-  // Busca as tarefas da API (get)
+  // Busca as tarefas da API (GET)
   async function getTarefas() {
     const tarefasFromApi = await api.get("/tarefas");
     setTasks(tarefasFromApi.data);
@@ -175,7 +175,6 @@ function SortableTaskItem({ task, onEdit, onDelete, onToggleComplete }) {
   };
 
   return (
-    // Estrutura da tarefa
     <li
       ref={setNodeRef}
       style={style}
@@ -185,11 +184,17 @@ function SortableTaskItem({ task, onEdit, onDelete, onToggleComplete }) {
         task.custo >= 1000 ? "bg-red-300" : "bg-yellow-400"
       }`}
     >
+      {/* Título da tarefa e Id */}
       <div className="flex-grow">
-        <h2 className="text-lg font-bold flex-grow overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer">
-          {task.nome}
+        <h2 className="text-lg font-bold flex justify-between items-center">
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+            {task.nome}
+          </span>
+          <span className="italic text-sm font-light text-right">
+            Id: {task.id}
+          </span>
         </h2>
-
+        {/* Status da tarefa */}
         <div className="flex justify-between items-center mt-2">
           <span
             className={`text-sm ${
@@ -220,7 +225,7 @@ function SortableTaskItem({ task, onEdit, onDelete, onToggleComplete }) {
           </div>
         </div>
 
-        {/* Estrutura para Custo, Data Limite e Descrição */}
+        {/* Informações adicionais */}
         <div className="mt-2">
           <p className="text-sm font-semibold">
             Custo:
