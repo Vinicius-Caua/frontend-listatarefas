@@ -3,7 +3,6 @@ import api from "../../api";
 import Modal from "../Modal";
 
 function EditModal({ isOpen, task, onCancel }) {
-  // Estado para armazenar os valores do formulário
   const [formValues, setFormValues] = useState({
     id: 0,
     nome: "",
@@ -14,50 +13,84 @@ function EditModal({ isOpen, task, onCancel }) {
     ordemApresentacao: 0,
   });
 
-  // Estado para mensagens de erro
   const [errorMessage, setErrorMessage] = useState("");
-
-  // Referência para o campo "Nome"
+  const [custoError, setCustoError] = useState(""); // Estado para mensagem de erro do custo
   const inputNome = useRef();
 
-  // Atualiza os valores do formulário quando o modal é aberto
   useEffect(() => {
     if (isOpen && task) {
-      // Converte a dataLimite para o formato correto (YYYY-MM-DD)
-      const formattedDate = new Date(task.dataLimite).toISOString().split('T')[0]; // 'en-CA' retorna no formato ISO 'YYYY-MM-DD'
+      const formattedDate = new Date(task.dataLimite).toISOString().split("T")[0];
+      const formattedCusto = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      })
+        .format(task.custo)
+        .replace("R$", "") // Remove o símbolo "R$"
+        .trim();
+
       setFormValues({
         id: task.id,
         nome: task.nome || "",
         descricao: task.descricao || "",
-        custo: task.custo.toFixed(2), // Limita a exibição a duas casas decimais
+        custo: formattedCusto,
         dataLimite: formattedDate,
         realizada: task.realizada || false,
         ordemApresentacao: task.ordemApresentacao || 0,
       });
 
-      // Foca no campo "Nome" ao abrir o modal
       if (inputNome.current) {
         inputNome.current.focus();
       }
     }
   }, [task, isOpen]);
 
-  // Atualiza o estado ao alterar valores do formulário
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
+
+    if (name === "custo") {
+      setCustoError(""); // Limpa a mensagem de erro ao digitar novamente
+
+      const numericValue = value
+        .replace(/\./g, "") // Remove pontos
+        .replace(",", ".") // Substitui vírgula por ponto para cálculos
+        .replace(/[^0-9.]/g, ""); // Remove caracteres inválidos
+
+      // Limite de 11 dígitos (incluindo centavos)
+      if (numericValue.length > 11) {
+        setCustoError("O custo só pode receber até 10 dígitos no total.");
+        return;
+      }
+
+      const formattedValue = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      })
+        .format(numericValue || 0)
+        .replace("R$", "") // Remove "R$"
+        .trim();
+
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        custo: formattedValue,
+      }));
+    } else {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        [name]: value,
+      }));
+    }
   };
 
-  // Função para enviar as alterações ao backend
   async function handleEdit(e) {
     e.preventDefault();
-    setErrorMessage(""); // Limpa mensagem de erro
+    setErrorMessage("");
 
-    // Validação do custo
-    const custo = parseFloat(formValues.custo);
+    const custo = parseFloat(
+      formValues.custo
+        .replace(/\./g, "") // Remove os pontos
+        .replace(",", ".") // Substitui vírgula por ponto
+    );
+
     if (isNaN(custo) || custo < 0) {
       setErrorMessage("Erro: O custo não pode ser negativo.");
       return;
@@ -69,15 +102,13 @@ function EditModal({ isOpen, task, onCancel }) {
         nome: formValues.nome,
         descricao: formValues.descricao,
         realizada: formValues.realizada,
-        custo: custo,
+        custo,
         dataLimite: new Date(formValues.dataLimite),
         ordemApresentacao: formValues.ordemApresentacao,
       };
 
-      // Atualiza a tarefa via API
       await api.put(`/tarefas/${formValues.id}`, requestData);
 
-      // Recarrega a página após a edição
       window.location.reload();
     } catch (error) {
       console.error(
@@ -88,7 +119,6 @@ function EditModal({ isOpen, task, onCancel }) {
     }
   }
 
-  // Não renderiza o modal se ele estiver fechado ou não houver tarefa
   if (!isOpen || !task) return null;
 
   return (
@@ -102,7 +132,7 @@ function EditModal({ isOpen, task, onCancel }) {
             type="text"
             name="nome"
             required
-            ref={inputNome} // Conecta a referência ao campo
+            ref={inputNome}
             value={formValues.nome}
             onChange={handleChange}
             maxLength={27}
@@ -111,26 +141,15 @@ function EditModal({ isOpen, task, onCancel }) {
         <div>
           <label className="font-bold">Custo: </label>
           <input
-            type="number"
+            type="text"
             name="custo"
             required
             value={formValues.custo}
             onChange={handleChange}
-            step="0.01" // Permite incrementos de duas casas decimais
-            onInput={(e) => {
-              // Limita o comprimento do valor total
-              if (e.target.value.length > 10) {
-                e.target.value = e.target.value.slice(0, 10);
-              }
-
-              // Limita a entrada a no máximo 2 casas decimais
-              const value = e.target.value;
-              const decimalIndex = value.indexOf(".");
-              if (decimalIndex !== -1 && value.length - decimalIndex > 3) {
-                e.target.value = parseFloat(value).toFixed(2);
-              }
-            }}
           />
+          {custoError && (
+            <p className="text-red-500 text-sm mt-1">{custoError}</p>
+          )}
         </div>
         <div>
           <label className="font-bold">Data Limite: </label>
@@ -151,12 +170,9 @@ function EditModal({ isOpen, task, onCancel }) {
             maxLength={35}
           ></textarea>
         </div>
-
-        {/* Mensagem de erro */}
         {errorMessage && (
           <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
         )}
-
         <div className="mt-4 flex justify-end space-x-2">
           <button
             type="submit"

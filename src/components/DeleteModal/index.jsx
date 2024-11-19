@@ -34,7 +34,8 @@ function DeleteModal({ isOpen, task, onCancel }) {
             {" "}
             {task.nome.length > 30 ? `${task.nome.substring(0, 30)}...` : task.nome}
           </p>
-          <p className="text-sm font-bold">Custo: R$ {task.custo.toFixed(2)}</p>
+          {/* Formato monetario brasileiro */}
+          <p className="text-sm font-bold">Custo: R$ {task.custo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
           <p className="text-sm font-bold">
             Data Limite: {formatarData(task.dataLimite)}
           </p>

@@ -230,7 +230,8 @@ function SortableTaskItem({ task, onEdit, onDelete, onToggleComplete }) {
           <p className="text-sm font-semibold">
             Custo:
             <span className="text-sm font-normal">
-              R$ {task.custo.toFixed(2)}
+              {/* Formato monetario brasileiro */}
+              R$ {task.custo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} 
             </span>
           </p>
           <div className="mt-2">
