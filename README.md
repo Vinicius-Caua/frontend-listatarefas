@@ -147,6 +147,6 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou env
 - `JavaScript SWC`
 - `Axios`
 - `Visual Studio Code`
-- `Netfly`
+- `Netlify`
 
 <p align="right">(<a href="#readme-top">Voltar ao Início</a>)</p>
